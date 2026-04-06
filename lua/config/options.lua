@@ -10,10 +10,12 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- Disable autoformat for .env files
+-- Disable all helpers for .env files (like plain vim)
 vim.api.nvim_create_autocmd({ "BufRead", "BufNewFile" }, {
   pattern = { ".env", ".env.*", "*.env" },
   callback = function()
     vim.b.autoformat = false
+    vim.diagnostic.enable(false, { bufnr = 0 }) -- disable diagnostics/linting
+    vim.cmd("LspStop") -- stop LSP for this buffer
   end,
 })
